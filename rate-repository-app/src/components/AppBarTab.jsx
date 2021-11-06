@@ -1,8 +1,14 @@
 import React from 'react';
-import { Pressable, Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
+import { Link } from "react-router-native";
 import theme from '../theme';
 
 const styles = StyleSheet.create({
+  containerTab: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
   tabbar: {
     color: theme.colors.secondary,
     fontSize: theme.fontSizes.subheading,
@@ -16,10 +22,13 @@ const styles = StyleSheet.create({
 
 const AppBarTab = () => {
   return (
-    <View>
-      <Pressable>
+    <View style={styles.containerTab}>
+      <Link to="/">
         <Text style={styles.tabbar}>Repositories</Text>
-      </Pressable>
+      </Link>
+      <Link to="/login">
+        <Text style={styles.tabbar}>Sign in</Text>
+      </Link>
     </View>
   );
 };

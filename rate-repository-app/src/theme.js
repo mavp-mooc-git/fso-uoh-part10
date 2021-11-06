@@ -7,7 +7,7 @@ const theme = {
     bgDark: '#24292e',
     bgLight: '#dddddd',
     btnText: '#ffffff',
-    bgMain: '#e1e4e8'
+    mainBackground: '#e1e4e8'
   },
   fontSizes: {
     body: 16,
