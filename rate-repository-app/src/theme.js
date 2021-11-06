@@ -6,6 +6,8 @@ const theme = {
     secondary: '#dddddd',
     bgDark: '#24292e',
     bgLight: '#dddddd',
+    btnText: '#ffffff',
+    bgMain: '#e1e4e8'
   },
   fontSizes: {
     body: 16,
