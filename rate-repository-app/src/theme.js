@@ -7,7 +7,8 @@ const theme = {
     bgDark: '#24292e',
     bgLight: '#dddddd',
     btnText: '#ffffff',
-    mainBackground: '#e1e4e8'
+    mainBackground: '#e1e4e8',
+    error: '#d73a4a',
   },
   fontSizes: {
     body: 16,
