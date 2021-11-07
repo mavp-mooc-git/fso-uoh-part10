@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import FormikTextInput from './FormikTextInput';
@@ -9,14 +9,22 @@ import theme from '../theme';
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: theme.colors.primary,
+    backgroundColor: Platform.select({
+      android: theme.colors.primary,
+      ios: theme.colors.secondary,
+      default: theme.colors.primary
+    }),
     borderRadius: 4,
     height: 48,
     margin: 16,
     padding: 8
   },
   btnText: {
-    color: theme.colors.btnText,
+    color: Platform.select({
+      android: theme.colors.btnText,
+      ios: theme.colors.primary,
+      default: theme.colors.bgLight
+    }),
   },
   container: {
     backgroundColor: theme.colors.btnText,

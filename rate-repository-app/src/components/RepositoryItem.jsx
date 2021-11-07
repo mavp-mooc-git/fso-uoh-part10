@@ -1,18 +1,26 @@
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
 
 const styles = StyleSheet.create({
   button: {
     alignItems: "center",
-    backgroundColor: theme.colors.primary,
+    backgroundColor: Platform.select({
+      android: theme.colors.primary,
+      ios: theme.colors.secondary,
+      default: theme.colors.primary
+    }),
     padding: 8,
     borderRadius: 4,
     width: 180,
   },
   btnText: {
-    color: theme.colors.btnText,
+    color: Platform.select({
+      android: theme.colors.btnText,
+      ios: theme.colors.primary,
+      default: theme.colors.bgLight
+    }),
   },
   container: {
     backgroundColor: theme.colors.btnText,
@@ -20,7 +28,8 @@ const styles = StyleSheet.create({
     paddingBottom: 4,
     paddingLeft: 20,
     paddingRight: 20,
-    paddingTop: 20
+    paddingTop: 20,
+    display: 'flex',
   },
   data: {
     display: 'flex',
@@ -39,13 +48,13 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   titleData: {
-    flexGrow: 1,
     paddingLeft: 12,
+    width: '90%',
   },
   textData: {
     paddingBottom: 8,
     textAlign: 'center',
-    width: '25%'
+    width: '25%',
   },
   colorPrimary: {
     color: theme.colors.primary,
@@ -83,6 +92,7 @@ const Title = ({data}) => {
         </Text>
         <Text
           style={styles.separator}
+          numberOfLines={2}
           color="textSecondary"
         >
           {data.description}

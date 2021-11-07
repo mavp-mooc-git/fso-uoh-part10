@@ -7,21 +7,8 @@ import theme from '../theme';
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: theme.colors.bgDark,
     borderRadius: 4,
     borderStyle: 'solid',
-    borderWidth: 1,
-    height: 48,
-    marginLeft: 16,
-    marginRight: 16,
-    marginTop: 16,
-    padding: 8,
-  },
-  errorInput: {
-    borderColor: theme.colors.error,
-    borderRadius: 4,
-    borderStyle: 'solid',
-    borderWidth: 2,
     height: 48,
     marginLeft: 16,
     marginRight: 16,
@@ -39,15 +26,13 @@ const FormikTextInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
 
-  const textInputStyle = (!meta.error) ? styles.input : styles.errorInput;
-
   return (
     <>
       <TextInput
         onChangeText={value => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
         value={field.value}
-        style={textInputStyle}
+        style={styles.input}
         error={showError}
         {...props}
       />
