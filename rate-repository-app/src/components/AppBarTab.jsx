@@ -2,6 +2,9 @@ import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Link } from "react-router-native";
 import theme from '../theme';
+import useSignOut from '../hooks/useSignOut';
+import { useApolloClient } from '@apollo/client';
+import useAuthStorage from '../hooks/useAuthStorage';
 
 const styles = StyleSheet.create({
   containerTab: {
@@ -21,14 +24,34 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = () => {
+  const { data, loading, error } = useSignOut();
+  const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
+  
+  if (loading) {
+    return <div>loading data...</div>;
+  }
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  const SignOut = async () => {
+    await authStorage.removeAccessToken();
+    apolloClient.resetStore();
+  };
+
   return (
     <View style={styles.containerTab}>
       <Link to="/">
         <Text style={styles.tabbar}>Repositories</Text>
       </Link>
+      {(!data?.authorizedUser) ? 
       <Link to="/login">
         <Text style={styles.tabbar}>Sign in</Text>
-      </Link>
+      </Link> :
+      <Link to="/">
+        <Text style={styles.tabbar} onPress={SignOut}>Sign Out</Text>
+      </Link>}
     </View>
   );
 };
