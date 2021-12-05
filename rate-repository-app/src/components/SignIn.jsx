@@ -6,6 +6,10 @@ import FormikTextInput from './FormikTextInput';
 import Text from './Text';
 import theme from '../theme';
 import useSignIn from '../hooks/useSignIn';
+/**
+ * For react-router-dom v6, replaced useHistory with useNavigate
+ **/
+import { useNavigate } from "react-router-native";
 
 const styles = StyleSheet.create({
   button: {
@@ -65,6 +69,7 @@ const Loginform = ({ onSubmit }) => {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const navigate = useNavigate();
 
   const onSubmit = async (values) => {
     const { username, password } = values;
@@ -72,6 +77,8 @@ const SignIn = () => {
     try {
       const { data } = await signIn({ username, password });
       console.log(data);
+      // For react-router-dom v6, replaced history.push("/") with navigate("/")
+      navigate("/");
     } catch (e) {
       console.log(e);
     }
