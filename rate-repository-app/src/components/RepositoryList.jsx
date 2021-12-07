@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, Text, View, StyleSheet } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
@@ -13,21 +13,11 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const renderItem = ({ item }) => <RepositoryItem data={item} />;
 
-const RepositoryList = () => {
-  const { data, loading, error } = useRepositories();
-
-  if (loading) {
-    return <div>loading data...</div>;
-  }
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  // Get the nodes from the edges array
-  const repositoryNodes = data.repositories
-    ? data.repositories.edges.map(edge => edge.node)
+export const RepositoryListContainer = ({ repositories }) => {
+  const repositoryNodes = repositories
+    ? repositories.edges.map((edge) => edge.node)
     : [];
-  
+
   return (
     <FlatList
       data={repositoryNodes}
@@ -37,6 +27,18 @@ const RepositoryList = () => {
       keyExtractor={item => item.id}
     />
   );
+};
+
+const RepositoryList = () => {
+  const { data, loading, error } = useRepositories();
+
+  if (loading) {
+    return <Text>loading data...</Text>;
+  } else if(data, !loading) {
+    return <RepositoryListContainer repositories={data?.repositories} />;
+  } else {
+    return <Text>Error: {error}</Text>;
+  }
 };
 
 export default RepositoryList;

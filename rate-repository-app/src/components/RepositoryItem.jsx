@@ -2,6 +2,7 @@ import React from 'react';
 import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 import Text from './Text';
 import theme from '../theme';
+import numberToK from '../utils/numberToK';
 
 const styles = StyleSheet.create({
   button: {
@@ -107,8 +108,6 @@ const Title = ({data}) => {
     </View>
   );
 };
-
-const numberToK = (number) => (number >= 1000) ? (number/1000).toFixed(1)+'k' : number;
 
 const Data = ({data}) => {
   return (
