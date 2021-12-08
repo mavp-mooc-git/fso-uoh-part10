@@ -1,5 +1,11 @@
 import React from 'react';
-import { Image, Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Image, Platform, Pressable,
+  StyleSheet, TouchableOpacity, View
+} from 'react-native';
+import { useNavigate } from 'react-router-native';
+//import * as Linking from 'expo-linking';          // expo install expo-linking
+import * as WebBrowser from 'expo-web-browser';     // expo install expo-web-browser
 import Text from './Text';
 import theme from '../theme';
 import numberToK from '../utils/numberToK';
@@ -15,6 +21,18 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 4,
     width: 180,
+  },
+  btnGithub: {
+    alignItems: "center",
+    backgroundColor: Platform.select({
+      android: theme.colors.primary,
+      ios: theme.colors.secondary,
+      default: theme.colors.primary
+    }),
+    margin: 16,
+    padding: 16,
+    borderRadius: 4,
+    width: '95%',
   },
   btnText: {
     color: Platform.select({
@@ -124,11 +142,38 @@ const Data = ({data}) => {
   );
 };
 
-const FlatList = ({data}) => {
+const FlatList = ({data, view}) => {
+  const navigate = useNavigate();
+
+  const handlePress = () => {
+    navigate(`/repo/${data.id}`);
+  };
+
+  const handleLinking = (url) => {
+    //Linking.openURL(url);
+    WebBrowser.openBrowserAsync(url);
+  };
+  
   return (
     <View style={styles.container}>
-      <Title data={data} />
-      <Data data={data} />
+      <Pressable
+        onPress={handlePress}
+      >
+        <Title data={data} />
+        <Data data={data} />
+        {(!view) ? null :
+        <TouchableOpacity
+          style={styles.btnGithub}
+          onPress={() => handleLinking(data.url)}
+        >
+          <Text style={styles.btnText}
+            fontSize="subheading"
+            fontWeight="bold"
+          >
+            Open in GitHub
+          </Text>
+        </TouchableOpacity>}
+      </Pressable>
     </View>
   );
 };
