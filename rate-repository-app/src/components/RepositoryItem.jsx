@@ -98,7 +98,7 @@ const Title = ({data}) => {
       <Image
         style={styles.logo}
         source={{
-          uri: data.ownerAvatarUrl,
+          uri: data?.ownerAvatarUrl,
         }}
       />
       <View style={styles.titleData}>
@@ -107,20 +107,20 @@ const Title = ({data}) => {
           fontWeight="bold"
           fontSize="subheading"
         >
-          {data.fullName}
+          {data?.fullName}
         </Text>
         <Text
           style={styles.separator}
           numberOfLines={2}
           color="textSecondary"
         >
-          {data.description}
+          {data?.description}
         </Text>
         <TouchableOpacity
           style={styles.button}
           onPress={() => console.log('Button pressed')}
         >
-          <Text style={styles.btnText} fontSize="subheading">{data.language}</Text>
+          <Text style={styles.btnText} fontSize="subheading">{data?.language}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -130,10 +130,10 @@ const Title = ({data}) => {
 const Data = ({data}) => {
   return (
     <View style={styles.data}>
-      <Text style={styles.textData} fontWeight="bold">{numberToK(data.stargazersCount)}</Text>
-      <Text style={styles.textData} fontWeight="bold">{numberToK(data.forksCount)}</Text>
-      <Text style={styles.textData} fontWeight="bold">{numberToK(data.reviewCount)}</Text>
-      <Text style={styles.textData} fontWeight="bold">{numberToK(data.ratingAverage)}</Text>
+      <Text style={styles.textData} fontWeight="bold">{numberToK(data?.stargazersCount)}</Text>
+      <Text style={styles.textData} fontWeight="bold">{numberToK(data?.forksCount)}</Text>
+      <Text style={styles.textData} fontWeight="bold">{numberToK(data?.reviewCount)}</Text>
+      <Text style={styles.textData} fontWeight="bold">{numberToK(data?.ratingAverage)}</Text>
       <Text style={styles.textData} color="textSecondary">Stars</Text>
       <Text style={styles.textData} color="textSecondary">Forks</Text>
       <Text style={styles.textData} color="textSecondary">Reviews</Text>
@@ -142,29 +142,29 @@ const Data = ({data}) => {
   );
 };
 
-const FlatList = ({data, view}) => {
+const FlatList = ({repository, view}) => {
   const navigate = useNavigate();
 
   const handlePress = () => {
-    navigate(`/repo/${data.id}`);
+    navigate(`/repo/${repository?.id}`);
   };
 
   const handleLinking = (url) => {
     //Linking.openURL(url);
     WebBrowser.openBrowserAsync(url);
   };
-  
+
   return (
     <View style={styles.container}>
       <Pressable
         onPress={handlePress}
       >
-        <Title data={data} />
-        <Data data={data} />
+        <Title data={repository} />
+        <Data data={repository} />
         {(!view) ? null :
         <TouchableOpacity
           style={styles.btnGithub}
-          onPress={() => handleLinking(data.url)}
+          onPress={() => handleLinking(repository?.url)}
         >
           <Text style={styles.btnText}
             fontSize="subheading"

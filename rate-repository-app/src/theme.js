@@ -15,6 +15,7 @@ const theme = {
   fontSizes: {
     body: 16,
     subheading: 20,
+    heading: 24,
   },
   fonts: {
     main: Platform.select({
