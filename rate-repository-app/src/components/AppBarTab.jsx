@@ -49,9 +49,14 @@ const AppBarTab = () => {
       <Link to="/login">
         <Text style={styles.tabbar}>Sign in</Text>
       </Link> :
-      <Link to="/">
-        <Text style={styles.tabbar} onPress={SignOut}>Sign Out</Text>
-      </Link>}
+      <View style={styles.containerTab}>
+        <Link to="/review">
+          <Text style={styles.tabbar}>Create a Review</Text>
+        </Link>
+        <Link to="/">
+          <Text style={styles.tabbar} onPress={SignOut}>Sign Out</Text>
+        </Link>
+      </View>}
     </View>
   );
 };
