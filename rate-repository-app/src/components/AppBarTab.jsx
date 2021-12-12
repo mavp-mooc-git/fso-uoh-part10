@@ -45,10 +45,15 @@ const AppBarTab = () => {
       <Link to="/">
         <Text style={styles.tabbar}>Repositories</Text>
       </Link>
-      {(!data?.authorizedUser) ? 
-      <Link to="/login">
-        <Text style={styles.tabbar}>Sign in</Text>
-      </Link> :
+      {(!data?.authorizedUser) ?
+      <View style={styles.containerTab}>
+        <Link to="/login">
+          <Text style={styles.tabbar}>Sign in</Text>
+        </Link>
+        <Link to="/signup">
+          <Text style={styles.tabbar}>Sign up</Text>
+        </Link>
+      </View> :
       <View style={styles.containerTab}>
         <Link to="/review">
           <Text style={styles.tabbar}>Create a Review</Text>
