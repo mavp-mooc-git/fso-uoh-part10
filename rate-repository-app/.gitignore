@@ -1,6 +1,7 @@
 package-lock.json
 .vscode
 .env
+metro.config.js
 
 node_modules/
 .expo/

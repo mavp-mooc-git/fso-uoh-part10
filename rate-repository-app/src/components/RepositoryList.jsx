@@ -1,6 +1,8 @@
-import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native-web';
+import { FlatList, StyleSheet, Text } from 'react-native';
 import RepositoryItem from './RepositoryItem';
+import PickerList from './PickerList';
 import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
@@ -13,7 +15,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const renderItem = ({ item }) => <RepositoryItem repository={item} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+export const RepositoryListContainer = ({ repositories, sortlist, setSortlist }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -25,9 +27,14 @@ export const RepositoryListContainer = ({ repositories }) => {
       // other props
       renderItem={renderItem}
       keyExtractor={item => item.id}
+      ListHeaderComponent={() => <PickerList
+        sortlist={sortlist}
+        setSortlist={setSortlist}
+       />}
     />
   );
 };
+
 
 /**
  * Warning: Can't perform a React state update on an unmounted component.
@@ -39,12 +46,41 @@ export const RepositoryListContainer = ({ repositories }) => {
  **/
 
 const RepositoryList = () => {
-  const { repositories, loading, error } = useRepositories();
+  const [params, setParams] = useState({
+    orderDirection: "DESC",   // ASC, DESC
+    orderBy: "CREATED_AT"     // CREATED_AT, RATING_AVERAGE
+  });
+  const { repositories, loading, error } = useRepositories({params});
+  const [sortlist, setSortlist] = useState({
+    value: 'repo',
+    index: 1
+  });
+
+  useEffect(() => {
+    (sortlist.index === 2) ? setParams({
+      orderDirection: "DESC",
+      orderBy: "RATING_AVERAGE"
+    }) :
+    (sortlist.index === 3) ? setParams({
+      orderDirection: "ASC",
+      orderBy: "RATING_AVERAGE"
+    }) :
+    setParams({
+      orderDirection: "DESC",
+      orderBy: "CREATED_AT"
+    });
+  }, [sortlist]);
 
   if (loading) {
     return <Text>loading data...</Text>;
   } else if(repositories, !loading) {
-    return <RepositoryListContainer repositories={repositories} />;
+    return (
+      <RepositoryListContainer
+        repositories={repositories}
+        sortlist={sortlist}
+        setSortlist={setSortlist}
+      />
+    );
   } else {
     return <Text>Error: {error}</Text>;
   }

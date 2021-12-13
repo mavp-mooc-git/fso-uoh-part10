@@ -93,7 +93,6 @@ const SignUp = () => {
 
     try {
       const { data } = await signUp({ username, password });
-      //const data = { username, password };
       console.log(data?.createUser?.username);
       // For react-router-dom v6, replaced history.push("/") with navigate("/")
       navigate("/");
