@@ -1,4 +1,4 @@
-import React/*, { useEffect }*/ from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import theme from '../theme';
@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.bgLight,
     height: 64,
     width: '70%',
-    //color: theme.colors.textPrimary,
     fontSize: theme.fontSizes.subheading,
     justifyContent: 'center',
   }

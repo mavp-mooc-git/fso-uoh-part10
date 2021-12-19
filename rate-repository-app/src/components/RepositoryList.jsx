@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View } from 'react-native-web';
 import { FlatList, StyleSheet, Text } from 'react-native';
-import RepositoryItem from './RepositoryItem';
+import SearchBar from './SearchBar';
 import PickerList from './PickerList';
+import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
 
 const styles = StyleSheet.create({
@@ -15,7 +16,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const renderItem = ({ item }) => <RepositoryItem repository={item} />;
 
-export const RepositoryListContainer = ({ repositories, sortlist, setSortlist }) => {
+export const RepositoryListContainer = ({ repositories, setSearch, sortlist, setSortlist }) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -27,10 +28,19 @@ export const RepositoryListContainer = ({ repositories, sortlist, setSortlist })
       // other props
       renderItem={renderItem}
       keyExtractor={item => item.id}
-      ListHeaderComponent={() => <PickerList
-        sortlist={sortlist}
-        setSortlist={setSortlist}
-       />}
+      ListHeaderComponent={() => {
+      return (
+        <View>
+          <SearchBar
+            setSearch={setSearch}
+          />
+          <PickerList
+            sortlist={sortlist}
+            setSortlist={setSortlist}
+          />
+        </View>
+      );
+      }}
     />
   );
 };
@@ -55,6 +65,7 @@ const RepositoryList = () => {
     value: 'repo',
     index: 1
   });
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     (sortlist.index === 2) ? setParams({
@@ -71,6 +82,17 @@ const RepositoryList = () => {
     });
   }, [sortlist]);
 
+  useEffect(() => {
+    if(search !== '') {
+      setParams({
+        ...params,
+        searchKeyword: search
+      });
+    } else {
+      setParams({params});
+    }
+  }, [search]);
+
   if (loading) {
     return <Text>loading data...</Text>;
   } else if(repositories, !loading) {
@@ -79,6 +101,7 @@ const RepositoryList = () => {
         repositories={repositories}
         sortlist={sortlist}
         setSortlist={setSortlist}
+        setSearch={setSearch}
       />
     );
   } else {
