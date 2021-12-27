@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderStyle: 'solid',
     borderColor: theme.colors.primary,
-    borderRadius: '50%',
+    borderRadius: 32,  /* width / 2 */
     color: theme.colors.primary,
     height: 64,
     minWidth: 64,

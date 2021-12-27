@@ -14,3 +14,14 @@ export const REPOSITORY_DETAILS = gql`
   }
 `;
 
+export const REVIEWS_DETAILS = gql`
+  fragment reviewsDetails on Review {
+    id
+    repositoryId
+    rating
+    createdAt
+    text
+  }
+`;
+
+

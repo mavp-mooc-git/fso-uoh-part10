@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { ImageBackground, Pressable, StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
 import FormikTextInput from './FormikTextInput';
 import Text from './Text';
@@ -13,36 +13,38 @@ const styles = StyleSheet.create({
     marginRight: 8,
     padding: 8,
     borderRadius: 4,
-    width: 180,
+    width: 100,
   },
   btnText: {
     color: theme.colors.textPrimary
   },
   container: {
     borderRadius: 4,
-    boxShadow: '0 1px 2px rgb(0 0 0 / 7%), 0 2px 4px rgb(0 0 0 / 7%),\
-                0 4px 8px rgb(0 0 0 / 7%), 0 8px 16px rgb(0 0 0 / 7%),\
-                0 16px 32px rgb(0 0 0 / 7%), 0 32px 64px rgb(0 0 0 / 7%)',
+    elevation: 4,  // Android shadow box
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
     display: 'flex',
     flexDirection: 'row',
+    flexWrap: 'wrap',
     backgroundColor: theme.colors.btnText,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     margin: 16,
     padding: 8
   },
+  bgimg: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    height: 24,
+    width: 72
+  },
   input: {
-    backgroundImage: `url("${iconSearch}")`,
-    backgroundPosition: '8px center',
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: '24px 24px',
     borderColor: 'silver',
     borderRadius: 4,
     borderStyle: 'solid',
     borderWidth: 1,
-    boxShadow: '0 1px 2px rgb(0 0 0 / 7%), 0 2px 4px rgb(0 0 0 / 7%),\
-                0 4px 8px rgb(0 0 0 / 7%), 0 8px 16px rgb(0 0 0 / 7%),\
-                0 16px 32px rgb(0 0 0 / 7%), 0 32px 64px rgb(0 0 0 / 7%)',
     color: theme.colors.textPrimary,
     flexGrow: 1,
     fontSize: theme.fontSizes.subheading,
@@ -52,22 +54,30 @@ const styles = StyleSheet.create({
     paddingLeft: 48,
     paddingRight: 8,
     paddingTop: 8
-  }
+  },
 });
 
 const SearchForm = ({ onSubmit }) => {
   return (
     <View style={styles.container}>
-      <FormikTextInput
-        style={styles.input}
-        name="search"
-        placeholder="search keyword or reset filter"
-      />
+      <ImageBackground
+        source={{uri: iconSearch}}
+        style={styles.bgimg}
+        resizeMode={"contain"}  // 'contain', 'cover' or 'stretch'
+      >
+        <FormikTextInput
+          style={styles.input}
+          name="search"
+          placeholder="search keyword or reset filter"
+          numberOfLines={1}
+          ellipsizeMode="end"
+        />
+      </ImageBackground>
       <Pressable
         style={styles.button}
         onPress={onSubmit}
       >
-        <Text style={styles.btnText} fontSize="body">Search / Reset</Text>
+        <Text style={styles.btnText} fontSize="body">Search</Text>
       </Pressable>
     </View>
   );

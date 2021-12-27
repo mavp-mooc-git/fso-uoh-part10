@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from 'react-native-web';
-import { FlatList, StyleSheet, Text } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import SearchBar from './SearchBar';
 import PickerList from './PickerList';
 import RepositoryItem from './RepositoryItem';
@@ -16,18 +15,29 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const renderItem = ({ item }) => <RepositoryItem repository={item} />;
 
-export const RepositoryListContainer = ({ repositories, setSearch, sortlist, setSortlist }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  onEndReach,
+  setSearch,
+  sortlist,
+  setSortlist,
+  initialNumToRender
+}) => {
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
 
   return (
+    <View style={{flex: 1}}>
     <FlatList
       data={repositoryNodes}
       ItemSeparatorComponent={ItemSeparator}
       // other props
       renderItem={renderItem}
       keyExtractor={item => item.id}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
+      initialNumToRender={initialNumToRender}
       ListHeaderComponent={() => {
       return (
         <View>
@@ -42,6 +52,7 @@ export const RepositoryListContainer = ({ repositories, setSearch, sortlist, set
       );
       }}
     />
+    </View>
   );
 };
 
@@ -56,29 +67,42 @@ export const RepositoryListContainer = ({ repositories, setSearch, sortlist, set
  **/
 
 const RepositoryList = () => {
+  const first = 4;
+
   const [params, setParams] = useState({
+    first,
     orderDirection: "DESC",   // ASC, DESC
     orderBy: "CREATED_AT"     // CREATED_AT, RATING_AVERAGE
   });
-  const { repositories, loading, error } = useRepositories({params});
+  const { repositories, fetchMore } = useRepositories({
+    ...params
+  });
   const [sortlist, setSortlist] = useState({
     value: 'repo',
     index: 1
   });
   const [search, setSearch] = useState('');
 
+  const onEndReach = () => {
+    fetchMore();
+    console.log('You have reached the end of the list');
+  };
+
   useEffect(() => {
     (sortlist.index === 2) ? setParams({
+      ...params,
       orderDirection: "DESC",
-      orderBy: "RATING_AVERAGE"
+      orderBy: "RATING_AVERAGE",
     }) :
     (sortlist.index === 3) ? setParams({
+      ...params,
       orderDirection: "ASC",
-      orderBy: "RATING_AVERAGE"
+      orderBy: "RATING_AVERAGE",
     }) :
     setParams({
+      ...params,
       orderDirection: "DESC",
-      orderBy: "CREATED_AT"
+      orderBy: "CREATED_AT",
     });
   }, [sortlist]);
 
@@ -86,27 +110,26 @@ const RepositoryList = () => {
     if(search !== '') {
       setParams({
         ...params,
-        searchKeyword: search
+        searchKeyword: search,
       });
     } else {
-      setParams({params});
+      setParams({
+        ...params,
+        searchKeyword: search,
+      });
     }
   }, [search]);
 
-  if (loading) {
-    return <Text>loading data...</Text>;
-  } else if(repositories, !loading) {
-    return (
-      <RepositoryListContainer
-        repositories={repositories}
-        sortlist={sortlist}
-        setSortlist={setSortlist}
-        setSearch={setSearch}
-      />
-    );
-  } else {
-    return <Text>Error: {error}</Text>;
-  }
+  return (
+    <RepositoryListContainer
+      repositories={repositories}
+      sortlist={sortlist}
+      setSortlist={setSortlist}
+      setSearch={setSearch}
+      onEndReach={onEndReach}
+      initialNumToRender={first}
+    />
+  );
 };
 
 export default RepositoryList;

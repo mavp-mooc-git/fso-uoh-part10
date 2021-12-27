@@ -29,10 +29,18 @@ const AppBarTab = () => {
   const apolloClient = useApolloClient();
   
   if (loading) {
-    return <div>loading data...</div>;
+    return (
+      <View>
+        <Text>loading data...</Text>
+      </View>
+    );
   }
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <View>
+        <Text>Error: {error}</Text>
+      </View>
+    );
   }
 
   const SignOut = async () => {
