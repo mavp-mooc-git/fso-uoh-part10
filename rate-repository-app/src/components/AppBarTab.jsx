@@ -66,6 +66,9 @@ const AppBarTab = () => {
         <Link to="/review">
           <Text style={styles.tabbar}>Create a Review</Text>
         </Link>
+        <Link to="/myreviews">
+          <Text style={styles.tabbar}>My Reviews</Text>
+        </Link>
         <Link to="/">
           <Text style={styles.tabbar} onPress={SignOut}>Sign Out</Text>
         </Link>

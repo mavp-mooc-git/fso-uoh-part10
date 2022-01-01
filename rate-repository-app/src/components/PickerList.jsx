@@ -29,7 +29,7 @@ const PickerList = ({sortlist, setSortlist}) => {
     <View style={styles.container}>
       <Picker
         style={styles.picker}
-        mode="dropdown"   // dialog, dropdown
+        mode="dialog"   // dialog, dropdown
         selectedValue={sortlist.value}
         onValueChange={onValueChange}>
         <Picker.Item

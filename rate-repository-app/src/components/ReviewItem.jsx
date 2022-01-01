@@ -72,7 +72,8 @@ const Reviews = ({data}) => {
           fontWeight="bold"
           fontSize="subheading"
         >
-          {data.user.username}
+          {(data?.user) ? data?.user.username
+                        : data.repositoryId.split(".").join("/")}
         </Text>
         <Text
           style={styles.separator}

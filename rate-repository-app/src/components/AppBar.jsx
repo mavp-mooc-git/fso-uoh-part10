@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight,
     display: "flex",
     flexDirection: "row",
-    height: 80,
+    minHeight: 80,
     alignItems: "flex-end"
   }
 });
